@@ -6,3 +6,5 @@
 
 ## TODO: make it scalable via micro services???
 perhaps either reliable nor ergonomic 
+
+## Meeting state be a lazy loading, only updates when queried
