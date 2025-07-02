@@ -3,6 +3,7 @@ package database
 import (
 	"sync"
 
+	"github.com/go-rendezvous/rendezvous/internal/model"
 	"github.com/go-rendezvous/rendezvous/internal/store"
 	"gorm.io/gorm"
 )
@@ -15,6 +16,7 @@ func Factory(db *gorm.DB) store.DBFactory {
 		factory = &datastore{
 			db: db,
 		}
+		db.AutoMigrate(&model.Meeting{}, &model.User{})
 	})
 	return factory
 }

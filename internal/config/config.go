@@ -1,6 +1,7 @@
 package config
 
 import (
+	"net"
 	"os"
 	"sync"
 
@@ -37,9 +38,15 @@ func Setup(confPath string) {
 		if err != nil {
 			logrus.Fatal(err)
 		}
+		printConf()
 	})
 }
 
 func GetConf() *Conf {
 	return &conf
+}
+
+func printConf() {
+	addr := net.JoinHostPort(conf.Host, conf.Port)
+	logrus.Infof("server listening %s, database configuration: %s, %s", addr, conf.DiverType, conf.Destination)
 }

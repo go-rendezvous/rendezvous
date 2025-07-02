@@ -35,3 +35,7 @@ go.work.sum
 /.idea
 /build
 /bin
+
+# sqlite database
+/server.db
+/default.db

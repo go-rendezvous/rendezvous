@@ -16,7 +16,7 @@ type Driver interface {
 	GetOrm() *gorm.DB
 }
 
-func NewDBDriver(conf config.Conf) (Driver, error) {
+func NewDBDriver(conf *config.Conf) (Driver, error) {
 	var driver Driver
 	var err error
 	driverType := conf.DiverType
