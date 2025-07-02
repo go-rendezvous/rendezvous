@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"gorm.io/driver/sqlite"
@@ -13,8 +13,8 @@ func (d *sqliteDriver) GetOrm() *gorm.DB {
 	return d.db
 }
 
-func newSqliteDriver(destination string) (Driver, error) {
-	db, err := gorm.Open(sqlite.Open(destination))
+func newSqliteDriver(destination string, opts ...gorm.Option) (Driver, error) {
+	db, err := gorm.Open(sqlite.Open(destination), opts...)
 	if err != nil {
 		return nil, err
 	}

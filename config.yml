@@ -1,6 +1,10 @@
 application_conf:
   host: 0.0.0.0
   port: 8080
+  meeting_no_length: 8
 database_conf:
   driver_type: sqlite
   destination: server.db
+jwt_conf:
+  secret: "secret"
+  expiration: 360000

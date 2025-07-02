@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"gorm.io/driver/postgres"
@@ -13,8 +13,8 @@ func (d *postgresDriver) GetOrm() *gorm.DB {
 	return d.db
 }
 
-func newPostgresDriver(destination string) (Driver, error) {
-	db, err := gorm.Open(postgres.Open(destination))
+func newPostgresDriver(destination string, opts ...gorm.Option) (Driver, error) {
+	db, err := gorm.Open(postgres.Open(destination), opts...)
 	if err != nil {
 		return nil, err
 	}

@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"github.com/go-rendezvous/rendezvous/internal/config"
@@ -22,13 +22,17 @@ func NewDBDriver(conf *config.Conf) (Driver, error) {
 	driverType := conf.DiverType
 	dest := conf.Destination
 
+	cfg := &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: false,
+	}
+
 	switch driverType {
 	case postgresScheme:
-		driver, err = newPostgresDriver(dest)
+		driver, err = newPostgresDriver(dest, cfg)
 	case sqliteScheme:
-		driver, err = newSqliteDriver(dest)
+		driver, err = newSqliteDriver(dest, cfg)
 	case mysqlScheme:
-		driver, err = newMysqlDriver(dest)
+		driver, err = newMysqlDriver(dest, cfg)
 	default:
 		logrus.Fatal("Not supporting schema: ", driverType)
 		return nil, err

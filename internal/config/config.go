@@ -1,7 +1,6 @@
 package config
 
 import (
-	"net"
 	"os"
 	"sync"
 
@@ -12,6 +11,13 @@ import (
 type Conf struct {
 	ApplicationConf `yaml:"application_conf"`
 	DatabaseConf    `yaml:"database_conf"`
+	JwtConf         `yaml:"jwt_conf"`
+}
+
+type ApplicationConf struct {
+	Host            string `yaml:"host"`
+	Port            string `yaml:"port"`
+	MeetingNoLength int    `yaml:"meeting_no_length"`
 }
 
 type DatabaseConf struct {
@@ -19,12 +25,12 @@ type DatabaseConf struct {
 	Destination string `yaml:"destination"`
 }
 
-type ApplicationConf struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
+type JwtConf struct {
+	Secret     string `yaml:"secret"`
+	Expiration int    `yaml:"expiration"`
 }
 
-var conf Conf
+var conf *Conf
 var once sync.Once
 
 func Setup(confPath string) {
@@ -33,8 +39,8 @@ func Setup(confPath string) {
 		if err != nil {
 			logrus.Fatal(err)
 		}
-		conf = Conf{}
-		err = yaml.Unmarshal(data, &conf)
+		conf = &Conf{}
+		err = yaml.Unmarshal(data, conf)
 		if err != nil {
 			logrus.Fatal(err)
 		}
@@ -43,10 +49,9 @@ func Setup(confPath string) {
 }
 
 func GetConf() *Conf {
-	return &conf
+	return conf
 }
 
 func printConf() {
-	addr := net.JoinHostPort(conf.Host, conf.Port)
-	logrus.Infof("server listening %s, database configuration: %s, %s", addr, conf.DiverType, conf.Destination)
+	logrus.Info(conf)
 }

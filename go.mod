@@ -3,6 +3,8 @@ module github.com/go-rendezvous/rendezvous
 go 1.23.0
 
 require (
+	github.com/golang-jwt/jwt/v4 v4.4.2
+	github.com/labstack/echo-jwt v0.0.0-20221127215225-c84d41a71003
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.9.1
@@ -37,4 +39,5 @@ require (
 	golang.org/x/sync v0.15.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.26.0 // indirect
+	golang.org/x/time v0.11.0 // indirect
 )

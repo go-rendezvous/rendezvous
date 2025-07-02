@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/go-rendezvous/rendezvous/internal/model"
-	cModel "github.com/go-rendezvous/rendezvous/pkg/model"
 )
 
 type MeetingInsertRequest struct {
@@ -18,11 +17,11 @@ type MeetingDeleteRequest struct {
 }
 
 type MeetingUpdateRequest struct {
-	MeetingNo    string              `json:"meeting_no"`
-	BookedBy     int                 `json:"booked_by"`
-	MeetingState cModel.MeetingState `json:"meeting_state"`
-	ScheduledAt  time.Time           `json:"scheduled_at"`
-	EndedAt      time.Time           `json:"ended_at"`
+	MeetingNo    string    `json:"meeting_no"`
+	BookedBy     int       `json:"booked_by"`
+	MeetingState string    `json:"meeting_state"`
+	ScheduledAt  time.Time `json:"scheduled_at"`
+	EndedAt      time.Time `json:"ended_at"`
 }
 
 type MeetingListRequest struct {
