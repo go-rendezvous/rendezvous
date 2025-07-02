@@ -7,10 +7,10 @@ import (
 )
 
 type Meeting struct {
-	MeetingId    int
-	MeetingNo    string
-	MeetingState model.MeetingState `gorm:"size:4"`
-	ScheduledAt  time.Time
-	EndedAt      time.Time
-	Users        []User `gorm:"many2many:user_meeting_rule"`
+	MeetingId    int                `gorm:"primaryKey"`
+	MeetingNo    string             `gorm:"unique;not null"`
+	MeetingState model.MeetingState `gorm:"size:4;not null"`
+	ScheduledAt  time.Time          `gorm:"not null"`
+	EndedAt      time.Time          `gorm:"not null"`
+	Users        []User             `gorm:"many2many:user_meeting_rule"`
 }
