@@ -4,17 +4,16 @@ import (
 	"sync"
 
 	"github.com/go-rendezvous/rendezvous/internal/store"
-	"github.com/go-rendezvous/rendezvous/pkg/db"
 	"gorm.io/gorm"
 )
 
 var once sync.Once
 var factory store.DBFactory
 
-func Factory(dbDriver db.Driver) store.DBFactory {
+func Factory(db *gorm.DB) store.DBFactory {
 	once.Do(func() {
 		factory = &datastore{
-			db: dbDriver.GetOrm(),
+			db: db,
 		}
 	})
 	return factory
