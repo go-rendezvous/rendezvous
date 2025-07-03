@@ -3,8 +3,10 @@ application_conf:
   port: 8080
   meeting_no_length: 8
 database_conf:
-  driver_type: sqlite
-  destination: server.db
+  # driver_type: sqlite
+  # destination: server.db
+  driver_type: postgres
+  destination: postgresql://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable
 jwt_conf:
   secret: "secret"
   expiration: 360000

@@ -1,8 +1,6 @@
 package dbstore
 
 import (
-	"errors"
-
 	"github.com/go-rendezvous/rendezvous/internal/model"
 	"github.com/go-rendezvous/rendezvous/internal/store"
 	"gorm.io/gorm"
@@ -38,15 +36,6 @@ func (m *meetingStore) Insert(meeting *model.Meeting) error {
 		}
 	}()
 
-	for _, user := range meeting.Users {
-		err = tx.Select("username").Find(&user).Error
-		if err != nil {
-			return err
-		}
-		if user.Username == "" {
-			return errors.New("user not existing")
-		}
-	}
 	return m.db.Create(meeting).Error
 }
 

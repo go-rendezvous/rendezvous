@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/go-rendezvous/rendezvous/pkg/model"
 	"github.com/go-rendezvous/rendezvous/pkg/service"
 	"github.com/labstack/echo/v4"
 )
@@ -29,12 +30,19 @@ func (a *BaseApi) MakeService(s *service.Service) *BaseApi {
 	return a
 }
 
-func (a *BaseApi) Error(value interface{}) error {
-	return a.Ctx.JSON(http.StatusBadRequest, value)
+func (a *BaseApi) Error(message string) error {
+	resp := model.Response{
+		Message: message,
+	}
+	return a.Ctx.JSON(http.StatusBadRequest, resp)
 }
 
-func (a *BaseApi) OK(value interface{}) error {
-	return a.Ctx.JSON(http.StatusOK, value)
+func (a *BaseApi) OK(message string, value interface{}) error {
+	resp := model.Response{
+		Message: message,
+		Value:   value,
+	}
+	return a.Ctx.JSON(http.StatusOK, resp)
 }
 
 func (a *BaseApi) addError(err error) {

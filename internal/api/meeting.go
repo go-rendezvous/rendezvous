@@ -20,15 +20,15 @@ func (e Meeting) List(ctx echo.Context) error {
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
-		return e.Error(err)
+		return e.Error(err.Error())
 	}
 
 	list, err := s.List(&req)
 	if err != nil {
-		return e.Error(err)
+		return e.Error(err.Error())
 	}
 
-	return e.OK(list)
+	return e.OK("query successful", list)
 }
 
 func (e Meeting) Insert(ctx echo.Context) error {
@@ -48,5 +48,5 @@ func (e Meeting) Insert(ctx echo.Context) error {
 		return e.Error(err.Error())
 	}
 
-	return e.OK("insert successful")
+	return e.OK("insert successful", nil)
 }

@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	"github.com/go-rendezvous/rendezvous/internal/config"
 	"github.com/go-rendezvous/rendezvous/internal/model"
 	"github.com/go-rendezvous/rendezvous/internal/service/dto"
@@ -34,9 +36,17 @@ func (s Meeting) Insert(req *dto.MeetingInsertRequest) error {
 		return err
 	}
 
-	users := []model.User{}
-	for _, id := range req.ParticipantIds {
-		users = append(users, model.User{UserId: id})
+	if len(req.ParticipantIds) == 0 {
+		req.ParticipantIds = append(req.ParticipantIds, claims.UserId)
+	}
+
+	users, err := dbstore.Factory().UserStore().List(req.ParticipantIds)
+	if err != nil {
+		return err
+	}
+
+	if len(users) != len(req.ParticipantIds) {
+		return errors.New("invalid participants")
 	}
 
 	meeting := model.Meeting{
