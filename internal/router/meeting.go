@@ -6,13 +6,11 @@ import (
 )
 
 func init() {
-	auth = append(auth, meetingRouter)
+	auth = append(auth, registerMeetingRouter)
 }
 
-func meetingRouter(r *echo.Group) {
-	r.Group("/meeting")
-
+func registerMeetingRouter(r *echo.Group) {
 	meeting := api.Meeting{}
-	r.GET("", meeting.List)
-	r.POST("", meeting.Insert)
+	r.GET("/meeting", meeting.List)
+	r.POST("/meeting", meeting.Insert)
 }

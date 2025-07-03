@@ -21,7 +21,7 @@ func Factory() store.DBFactory {
 			logrus.Fatal(err)
 		}
 
-		db := driver.GetOrm()
+		db := driver.GetOrm().Debug()
 		factory = &datastore{
 			db: db,
 		}
@@ -37,4 +37,8 @@ type datastore struct {
 
 func (s *datastore) MeetingStore() store.MeetingStore {
 	return newMeetingStore(s)
+}
+
+func (s *datastore) UserStore() store.UserStore {
+	return newUserStore(s)
 }

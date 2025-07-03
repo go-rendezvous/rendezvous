@@ -9,6 +9,16 @@ import (
 var auth = make([]func(r *echo.Group), 0)
 
 func InitRouter(r *echo.Echo) {
+	initSysRouter(r)
+
+	initBusinessRouter(r)
+}
+
+func initSysRouter(r *echo.Echo) {
+	registerSystemRouter(r)
+}
+
+func initBusinessRouter(r *echo.Echo) {
 	group := r.Group("/api/v1", echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.GetConf().Secret),
 	}))
@@ -16,8 +26,4 @@ func InitRouter(r *echo.Echo) {
 	for _, f := range auth {
 		f(group)
 	}
-}
-
-func initSysRouter(r *echo.Echo) {
-
 }
