@@ -11,7 +11,18 @@ type userStore struct {
 }
 
 func (u *userStore) Insert(user *model.User) error {
-	return nil
+	var err error
+	tx := u.db.Begin()
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		} else {
+			tx.Commit()
+		}
+	}()
+
+	err = u.db.Model(&user).Create(user).Error
+	return err
 }
 
 func (u *userStore) Delete(userId int) error {
@@ -22,10 +33,11 @@ func (u *userStore) Update(user *model.User) error {
 	return nil
 }
 
-func (u *userStore) List(userIds []int) ([]*model.User, error) {
+func (u *userStore) List(userIds []int) ([]model.User, error) {
 	var err error
-	users := []*model.User{}
-	err = u.db.Where("user_id in ?", userIds).Find(&users).Error
+	users := []model.User{}
+
+	err = u.db.Model(&users).Where("user_id in ?", userIds).Find(&users).Error
 
 	return users, err
 }

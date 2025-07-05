@@ -1,8 +1,26 @@
 package dto
 
-import "github.com/go-rendezvous/rendezvous/internal/model"
+import (
+	"time"
+
+	"github.com/go-rendezvous/rendezvous/internal/model"
+)
 
 type UserInsertRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email"`
+}
+
+func (r *UserInsertRequest) GenModel() *model.User {
+	return &model.User{
+		Username:  r.Username,
+		Password:  r.Password,
+		Phone:     r.Phone,
+		Email:     r.Email,
+		CreatedAt: time.Now(),
+	}
 }
 
 type UserDeleteRequest struct {

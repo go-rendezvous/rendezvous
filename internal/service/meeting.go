@@ -24,7 +24,7 @@ func (s Meeting) List(req *dto.MeetingListRequest) ([]dto.MeetingListResponse, e
 
 	var respList []dto.MeetingListResponse
 	for _, meeting := range meetings {
-		respList = append(respList, dto.GenMeetingListResponse(meeting))
+		respList = append(respList, dto.GenMeetingListResponse(&meeting))
 	}
 	return respList, nil
 }
