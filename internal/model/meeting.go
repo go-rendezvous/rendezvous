@@ -12,5 +12,5 @@ type Meeting struct {
 	MeetingState string    `gorm:"size:4;not null"`
 	ScheduledAt  time.Time `gorm:"not null"`
 	EndedAt      time.Time `gorm:"not null"`
-	Users        []User    `gorm:"many2many:user_meeting_rule"`
+	Users        []*User   `gorm:"many2many:user_meeting_rule"`
 }

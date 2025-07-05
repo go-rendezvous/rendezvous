@@ -18,7 +18,7 @@ func (s User) List(req *dto.UserListRequest) ([]dto.UserListResponse, error) {
 
 	var respList []dto.UserListResponse
 	for _, user := range users {
-		respList = append(respList, dto.GenUserListResponse(&user))
+		respList = append(respList, dto.GenUserListResponse(user))
 	}
 	return respList, nil
 }

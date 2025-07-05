@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-rendezvous/rendezvous/internal/config"
 	"github.com/go-rendezvous/rendezvous/internal/router"
+	"github.com/go-rendezvous/rendezvous/internal/store/dbstore"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sirupsen/logrus"
@@ -26,6 +27,11 @@ var ServerCommand = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		server := echo.New()
 		server.Use(middleware.Logger())
+
+		if err := dbstore.Factory().Migrate(); err != nil {
+			logrus.Fatal(err)
+			return err
+		}
 
 		router.InitRouter(server)
 

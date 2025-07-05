@@ -10,9 +10,9 @@ type meetingStore struct {
 	db *gorm.DB
 }
 
-func (m *meetingStore) List(userId int) ([]model.Meeting, error) {
+func (m *meetingStore) List(userId int) ([]*model.Meeting, error) {
 	var err error
-	var meetingList []model.Meeting
+	var meetingList []*model.Meeting
 	err = m.db.Preload("Users").
 		Where("booked_by = ?", userId).
 		Find(&meetingList).
@@ -36,7 +36,7 @@ func (m *meetingStore) Insert(meeting *model.Meeting) error {
 		}
 	}()
 
-	return m.db.Create(meeting).Error
+	return m.db.Omit("Users.*").Create(meeting).Error
 }
 
 func (m *meetingStore) Delete(meetingNo string) error {

@@ -22,9 +22,9 @@ func (u *userStore) Update(user *model.User) error {
 	return nil
 }
 
-func (u *userStore) List(userIds []int) ([]model.User, error) {
+func (u *userStore) List(userIds []int) ([]*model.User, error) {
 	var err error
-	users := []model.User{}
+	users := []*model.User{}
 	err = u.db.Where("user_id in ?", userIds).Find(&users).Error
 
 	return users, err

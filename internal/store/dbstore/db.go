@@ -26,13 +26,16 @@ func Factory() store.DBFactory {
 			db: db,
 		}
 
-		driver.GetOrm().AutoMigrate(&model.Meeting{}, &model.User{})
 	})
 	return factory
 }
 
 type datastore struct {
 	db *gorm.DB
+}
+
+func (s *datastore) Migrate() error {
+	return s.db.AutoMigrate(&model.Meeting{}, &model.User{})
 }
 
 func (s *datastore) MeetingStore() store.MeetingStore {
