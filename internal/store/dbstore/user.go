@@ -10,34 +10,27 @@ type userStore struct {
 	db *gorm.DB
 }
 
-func (u *userStore) Insert(user *model.User) error {
-	var err error
-	tx := u.db.Begin()
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-		} else {
-			tx.Commit()
-		}
-	}()
-
-	err = u.db.Model(&user).Create(user).Error
-	return err
+func (s *userStore) Insert(user *model.User) error {
+	return s.db.Transaction(func(tx *gorm.DB) error {
+		return s.db.Model(&user).Create(user).Error
+	})
 }
 
-func (u *userStore) Delete(userId int) error {
-	return nil
+func (s *userStore) Delete(userId int) error {
+	return s.db.Where("user_id = ?", userId).Delete(&model.User{}).Error
 }
 
-func (u *userStore) Update(user *model.User) error {
-	return nil
+func (s *userStore) Update(user *model.User) error {
+	return s.db.Transaction(func(tx *gorm.DB) error {
+		return s.db.Save(user).Error
+	})
 }
 
-func (u *userStore) List(userIds []int) ([]model.User, error) {
+func (s *userStore) List(userIds []int) ([]model.User, error) {
 	var err error
 	users := []model.User{}
 
-	err = u.db.Model(&users).Where("user_id in ?", userIds).Find(&users).Error
+	err = s.db.Model(&users).Where("user_id in ?", userIds).Find(&users).Error
 
 	return users, err
 }

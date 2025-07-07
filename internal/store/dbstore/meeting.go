@@ -10,10 +10,10 @@ type meetingStore struct {
 	db *gorm.DB
 }
 
-func (m *meetingStore) List(userId int) ([]model.Meeting, error) {
+func (s *meetingStore) List(userId int) ([]model.Meeting, error) {
 	var err error
 	var meetingList []model.Meeting
-	err = m.db.Preload("Users").
+	err = s.db.Preload("Users").
 		Where("booked_by = ?", userId).
 		Find(&meetingList).
 		Error
@@ -25,27 +25,31 @@ func (m *meetingStore) List(userId int) ([]model.Meeting, error) {
 	return meetingList, nil
 }
 
-func (m *meetingStore) Insert(meeting *model.Meeting) error {
+func (s *meetingStore) Insert(meeting *model.Meeting) error {
+	return s.db.Transaction(func(tx *gorm.DB) error {
+		return tx.Create(meeting).Error
+	})
+}
+
+func (s *meetingStore) Delete(meetingNo string) error {
 	var err error
-	tx := m.db.Begin()
-	defer func() {
+	meeting := &model.Meeting{}
+	err = s.db.Model(meeting).Association("Users").Clear()
+	if err != nil {
+		return err
+	}
+
+	return s.db.Where("meeting_no = ?", meetingNo).Delete(meeting).Error
+}
+
+func (s *meetingStore) Update(meeting *model.Meeting) error {
+	return s.db.Transaction(func(tx *gorm.DB) error {
+		err := s.db.Model(meeting).Association("Users").Clear()
 		if err != nil {
-			tx.Rollback()
-		} else {
-			tx.Commit()
+			return err
 		}
-	}()
-
-	err = tx.Omit("Users.*").Create(meeting).Error
-	return err
-}
-
-func (m *meetingStore) Delete(meetingNo string) error {
-	return nil
-}
-
-func (m *meetingStore) Update(meeting *model.Meeting) error {
-	return nil
+		return s.db.Save(meeting).Error
+	})
 }
 
 func newMeetingStore(s *datastore) store.MeetingStore {
