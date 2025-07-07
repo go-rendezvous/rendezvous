@@ -11,6 +11,8 @@ func init() {
 
 func registerMeetingRouter(r *echo.Group) {
 	meeting := api.Meeting{}
-	r.GET("/meeting", meeting.List)
 	r.POST("/meeting", meeting.Insert)
+	r.DELETE("/meeting/:meeting_no", meeting.Delete)
+	r.PUT("/meeting", meeting.Update)
+	r.GET("/meeting", meeting.List)
 }

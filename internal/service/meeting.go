@@ -16,19 +16,6 @@ type Meeting struct {
 	service.Service
 }
 
-func (s Meeting) List(req *dto.MeetingListRequest) ([]dto.MeetingListResponse, error) {
-	meetings, err := dbstore.Factory().MeetingStore().List(req.BookedBy)
-	if err != nil {
-		return nil, err
-	}
-
-	var respList []dto.MeetingListResponse
-	for _, meeting := range meetings {
-		respList = append(respList, dto.GenMeetingListResponse(&meeting))
-	}
-	return respList, nil
-}
-
 func (s Meeting) Insert(req *dto.MeetingInsertRequest) error {
 	var err error
 	claims, err := s.ExtractClaims()
@@ -40,7 +27,6 @@ func (s Meeting) Insert(req *dto.MeetingInsertRequest) error {
 		req.ParticipantIds = append(req.ParticipantIds, claims.UserId)
 	}
 
-	// TODO: needs optimization
 	users, err := dbstore.Factory().UserStore().List(req.ParticipantIds)
 	if err != nil {
 		return err
@@ -63,4 +49,42 @@ func (s Meeting) Insert(req *dto.MeetingInsertRequest) error {
 	err = dbstore.Factory().MeetingStore().Insert(&meeting)
 
 	return err
+}
+
+func (s Meeting) Delete(req *dto.MeetingDeleteRequest) error {
+	return dbstore.Factory().MeetingStore().Delete(req.MeetingNo)
+}
+
+func (s Meeting) Update(req *dto.MeetingUpdateRequest) error {
+	meetingStore := dbstore.Factory().MeetingStore()
+	userStore := dbstore.Factory().UserStore()
+
+	meeting, err := meetingStore.GetMeeting(req.MeetingNo)
+	if err != nil {
+		return err
+	}
+	users, err := userStore.List(req.ParticipantIds)
+	if err != nil {
+		return err
+	}
+
+	meeting.MeetingState = req.MeetingState
+	meeting.ScheduledAt = req.ScheduledAt
+	meeting.EndedAt = req.EndedAt
+	meeting.Users = users
+
+	return meetingStore.Update(&meeting)
+}
+
+func (s Meeting) List(req *dto.MeetingListRequest) ([]dto.MeetingListResponse, error) {
+	meetings, err := dbstore.Factory().MeetingStore().List(req.BookedBy)
+	if err != nil {
+		return nil, err
+	}
+
+	var respList []dto.MeetingListResponse
+	for _, meeting := range meetings {
+		respList = append(respList, dto.GenMeetingListResponse(&meeting))
+	}
+	return respList, nil
 }
