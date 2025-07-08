@@ -20,6 +20,16 @@ func (s User) Insert(req *dto.UserInsertRequest) error {
 	return err
 }
 
+func (s User) Delete(req *dto.UserDeleteRequest) error {
+	return dbstore.Factory().UserStore().Delete(req.UserId)
+}
+
+func (s User) Update(req *dto.UserUpdateRequest) error {
+	user := req.GenModel()
+
+	return dbstore.Factory().UserStore().Update(user)
+}
+
 func (s User) List(req *dto.UserListRequest) ([]dto.UserListResponse, error) {
 	users, err := dbstore.Factory().UserStore().List(req.Ids)
 	if err != nil {

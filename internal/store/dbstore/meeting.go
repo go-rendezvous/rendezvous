@@ -40,15 +40,11 @@ func (s *meetingStore) Delete(meetingNo string) error {
 
 func (s *meetingStore) Update(meeting *model.Meeting) error {
 	return s.db.Transaction(func(tx *gorm.DB) error {
-		err := s.db.Model(meeting).Association("Users").Clear()
+		err := s.db.Model(meeting).Association("Users").Replace(meeting.Users)
 		if err != nil {
 			return err
 		}
 
-		err = s.db.Model(meeting).Association("Users").Append(meeting.Users)
-		if err != nil {
-			return err
-		}
 		return s.db.Save(meeting).Error
 	})
 }

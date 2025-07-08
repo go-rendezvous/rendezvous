@@ -11,26 +11,6 @@ type User struct {
 	api.BaseApi
 }
 
-func (e User) List(ctx echo.Context) error {
-	var err error
-	var req dto.UserListRequest
-	s := service.User{}
-	err = e.BindContext(ctx).
-		Bind(&req).
-		MakeService(&s.Service).
-		Errors
-	if err != nil {
-		return e.Error(err.Error())
-	}
-
-	list, err := s.List(&req)
-	if err != nil {
-		return e.Error(err.Error())
-	}
-
-	return e.OK("query successful", list)
-}
-
 func (e User) Insert(ctx echo.Context) error {
 	var err error
 	var req dto.UserInsertRequest
@@ -48,5 +28,65 @@ func (e User) Insert(ctx echo.Context) error {
 		return e.Error(err.Error())
 	}
 
-	return e.OK("insert successful", nil)
+	return e.OK("success", nil)
+}
+
+func (e User) Delete(ctx echo.Context) error {
+	var err error
+	var req dto.UserDeleteRequest
+	s := service.User{}
+	err = e.BindContext(ctx).
+		Bind(&req).
+		MakeService(&s.Service).
+		Errors
+	if err != nil {
+		return e.Error(err.Error())
+	}
+
+	err = s.Delete(&req)
+	if err != nil {
+		return e.Error(err.Error())
+	}
+
+	return e.OK("success", nil)
+}
+
+func (e User) Update(ctx echo.Context) error {
+	var err error
+	var req dto.UserUpdateRequest
+	s := service.User{}
+	err = e.BindContext(ctx).
+		Bind(&req).
+		MakeService(&s.Service).
+		Errors
+	if err != nil {
+		return e.Error(err.Error())
+	}
+
+	err = s.Update(&req)
+	if err != nil {
+		return e.Error(err.Error())
+	}
+
+	return e.OK("success", nil)
+}
+
+func (e User) List(ctx echo.Context) error {
+	var err error
+	var req dto.UserListRequest
+	s := service.User{}
+	err = e.BindContext(ctx).
+		Bind(&req).
+		MakeService(&s.Service).
+		Errors
+	if err != nil {
+		return e.Error(err.Error())
+	}
+
+	list, err := s.List(&req)
+	if err != nil {
+		return e.Error(err.Error())
+	}
+
+	return e.OK("success", list)
 }

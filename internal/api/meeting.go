@@ -28,7 +28,7 @@ func (e Meeting) Insert(ctx echo.Context) error {
 		return e.Error(err.Error())
 	}
 
-	return e.OK("successful", nil)
+	return e.OK("success", nil)
 }
 
 func (e Meeting) Delete(ctx echo.Context) error {
@@ -48,7 +48,7 @@ func (e Meeting) Delete(ctx echo.Context) error {
 		return e.Error(err.Error())
 	}
 
-	return e.OK("successful", nil)
+	return e.OK("success", nil)
 }
 
 func (e Meeting) Update(ctx echo.Context) error {
@@ -68,7 +68,7 @@ func (e Meeting) Update(ctx echo.Context) error {
 		return e.Error(err.Error())
 	}
 
-	return e.OK("successful", nil)
+	return e.OK("success", nil)
 }
 
 func (e Meeting) List(ctx echo.Context) error {
@@ -88,5 +88,5 @@ func (e Meeting) List(ctx echo.Context) error {
 		return e.Error(err.Error())
 	}
 
-	return e.OK("successful", list)
+	return e.OK("success", list)
 }

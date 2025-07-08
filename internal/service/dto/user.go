@@ -24,9 +24,24 @@ func (r *UserInsertRequest) GenModel() *model.User {
 }
 
 type UserDeleteRequest struct {
+	UserId int `param:"user_id"`
 }
 
 type UserUpdateRequest struct {
+	UserId   int    `json:"user_id"`
+	Username string `json:"username"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email"`
+}
+
+func (r *UserUpdateRequest) GenModel() *model.User {
+	return &model.User{
+		UserId:    r.UserId,
+		Username:  r.Username,
+		Phone:     r.Phone,
+		Email:     r.Email,
+		CreatedAt: time.Now(),
+	}
 }
 
 type UserListRequest struct {
