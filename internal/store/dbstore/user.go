@@ -35,6 +35,14 @@ func (s *userStore) List(userIds []int) ([]model.User, error) {
 	return users, err
 }
 
+func (s *userStore) GetUser(username string) (model.User, error) {
+	var err error
+	user := model.User{}
+
+	err = s.db.Model(&user).Where("username = ?", username).Find(&user).Error
+	return user, err
+}
+
 func newUserStore(s *datastore) store.UserStore {
 	return &userStore{db: s.db}
 }

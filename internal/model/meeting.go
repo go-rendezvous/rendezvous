@@ -8,7 +8,7 @@ import (
 
 type Meeting struct {
 	MeetingId    int            `gorm:"primaryKey"`
-	MeetingNo    string         `gorm:"unique;not null"`
+	MeetingNo    string         `gorm:"uniqueIndex"`
 	BookedBy     int            `gorm:"not null"`
 	BookedByName string         `gorm:"size:64;not null" comment:"who has booked this meeting"`
 	MeetingState string         `gorm:"size:4;not null"`

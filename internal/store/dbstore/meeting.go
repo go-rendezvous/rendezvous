@@ -10,12 +10,6 @@ type meetingStore struct {
 	db *gorm.DB
 }
 
-func (s *meetingStore) GetMeeting(meetingNo string) (model.Meeting, error) {
-	meeting := model.Meeting{}
-	err := s.db.Where("meeting_no = ?", meetingNo).Find(&meeting).Error
-	return meeting, err
-}
-
 func (s *meetingStore) Insert(meeting *model.Meeting) error {
 	return s.db.Transaction(func(tx *gorm.DB) error {
 		return tx.Create(meeting).Error
@@ -62,6 +56,12 @@ func (s *meetingStore) List(userId int) ([]model.Meeting, error) {
 	}
 
 	return meetingList, nil
+}
+
+func (s *meetingStore) GetMeeting(meetingNo string) (model.Meeting, error) {
+	meeting := model.Meeting{}
+	err := s.db.Where("meeting_no = ?", meetingNo).Find(&meeting).Error
+	return meeting, err
 }
 
 func newMeetingStore(s *datastore) store.MeetingStore {

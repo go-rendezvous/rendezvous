@@ -1,6 +1,6 @@
 application_conf:
   host: 0.0.0.0
-  port: 8080
+  port: 8081
   meeting_no_length: 8
 database_conf:
   # sqlite:

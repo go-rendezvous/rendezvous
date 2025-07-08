@@ -46,7 +46,9 @@ func (s Meeting) Insert(req *dto.MeetingInsertRequest) error {
 		Users:        users,
 	}
 
-	err = dbstore.Factory().MeetingStore().Insert(&meeting)
+	meetingStore := dbstore.Factory().MeetingStore()
+
+	err = meetingStore.Insert(&meeting)
 
 	return err
 }

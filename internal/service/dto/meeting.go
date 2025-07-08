@@ -29,18 +29,18 @@ type MeetingListRequest struct {
 }
 
 type MeetingListResponse struct {
-	MeetingNo    string    `json:"meeting_no"`
-	BookedBy     string    `json:"booked_by"`
-	MeetingState string    `json:"meeting_state"`
-	ScheduledAt  time.Time `json:"scheduled_at"`
-	EndedAt      time.Time `json:"ended_at"`
-	Users        []string  `json:"users"`
+	MeetingNo    string             `json:"meeting_no"`
+	BookedBy     string             `json:"booked_by"`
+	MeetingState string             `json:"meeting_state"`
+	ScheduledAt  time.Time          `json:"scheduled_at"`
+	EndedAt      time.Time          `json:"ended_at"`
+	Users        []UserListResponse `json:"users"`
 }
 
 func GenMeetingListResponse(meeting *model.Meeting) MeetingListResponse {
-	var users []string
+	var users []UserListResponse
 	for _, user := range meeting.Users {
-		users = append(users, user.Username)
+		users = append(users, GenUserListResponse(&user))
 	}
 
 	return MeetingListResponse{

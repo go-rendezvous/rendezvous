@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/go-rendezvous/rendezvous/internal/pkg/util"
 	"github.com/go-rendezvous/rendezvous/internal/service/dto"
 	"github.com/go-rendezvous/rendezvous/internal/store/dbstore"
 	"github.com/go-rendezvous/rendezvous/pkg/service"
@@ -11,9 +12,16 @@ type User struct {
 }
 
 func (s User) Insert(req *dto.UserInsertRequest) error {
+	var err error
 	user := req.GenModel()
 
-	err := dbstore.Factory().UserStore().Insert(user)
+	password, err := util.HashPassword(user.Password)
+	if err != nil {
+		return err
+	}
+	user.Password = password
+
+	err = dbstore.Factory().UserStore().Insert(user)
 
 	return err
 }

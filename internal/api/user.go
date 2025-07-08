@@ -11,82 +11,82 @@ type User struct {
 	api.BaseApi
 }
 
-func (e User) Insert(ctx echo.Context) error {
+func (a User) Insert(ctx echo.Context) error {
 	var err error
 	var req dto.UserInsertRequest
 	s := service.User{}
-	err = e.BindContext(ctx).
+	err = a.BindContext(ctx).
 		Bind(&req).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
 	err = s.Insert(&req)
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
-	return e.OK("success", nil)
+	return a.OK("success", nil)
 }
 
-func (e User) Delete(ctx echo.Context) error {
+func (a User) Delete(ctx echo.Context) error {
 	var err error
 	var req dto.UserDeleteRequest
 	s := service.User{}
-	err = e.BindContext(ctx).
+	err = a.BindContext(ctx).
 		Bind(&req).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
 	err = s.Delete(&req)
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
-	return e.OK("success", nil)
+	return a.OK("success", nil)
 }
 
-func (e User) Update(ctx echo.Context) error {
+func (a User) Update(ctx echo.Context) error {
 	var err error
 	var req dto.UserUpdateRequest
 	s := service.User{}
-	err = e.BindContext(ctx).
+	err = a.BindContext(ctx).
 		Bind(&req).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
 	err = s.Update(&req)
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
-	return e.OK("success", nil)
+	return a.OK("success", nil)
 }
 
-func (e User) List(ctx echo.Context) error {
+func (a User) List(ctx echo.Context) error {
 	var err error
 	var req dto.UserListRequest
 	s := service.User{}
-	err = e.BindContext(ctx).
+	err = a.BindContext(ctx).
 		Bind(&req).
 		MakeService(&s.Service).
 		Errors
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
 	list, err := s.List(&req)
 	if err != nil {
-		return e.Error(err.Error())
+		return a.Error(err.Error())
 	}
 
-	return e.OK("success", list)
+	return a.OK("success", list)
 }

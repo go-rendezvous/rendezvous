@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"net"
 	"net/http"
 
 	"github.com/go-rendezvous/rendezvous/internal/config"
@@ -27,6 +28,7 @@ var ServerCommand = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		server := echo.New()
 		server.Use(middleware.Logger())
+		listenAddr := net.JoinHostPort(config.GetConf().Host, config.GetConf().Port)
 
 		if err := dbstore.Factory().Migrate(); err != nil {
 			logrus.Fatal(err)
@@ -39,7 +41,7 @@ var ServerCommand = &cobra.Command{
 			fmt.Printf("  Method: %-7s Path: %s\n", route.Method, route.Path)
 		}
 
-		if err := server.Start(":8080"); err != http.ErrServerClosed {
+		if err := server.Start(listenAddr); err != http.ErrServerClosed {
 			logrus.Fatal(err)
 		}
 		return nil

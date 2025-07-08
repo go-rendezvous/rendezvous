@@ -1,8 +1,7 @@
 package router
 
 import (
-	"github.com/go-rendezvous/rendezvous/internal/config"
-	echojwt "github.com/labstack/echo-jwt"
+	"github.com/go-rendezvous/rendezvous/internal/pkg/middleware"
 	"github.com/labstack/echo/v4"
 )
 
@@ -19,9 +18,7 @@ func initSysRouter(r *echo.Echo) {
 }
 
 func initBusinessRouter(r *echo.Echo) {
-	group := r.Group("/api/v1", echojwt.WithConfig(echojwt.Config{
-		SigningKey: []byte(config.GetConf().Secret),
-	}))
+	group := r.Group("/api/v1", middleware.JsonWebToken())
 
 	for _, f := range auth {
 		f(group)
