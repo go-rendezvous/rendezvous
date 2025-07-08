@@ -45,7 +45,7 @@ func (r *UserUpdateRequest) GenModel() *model.User {
 }
 
 type UserListRequest struct {
-	Ids []int `json:"ids"`
+	Ids []int `query:"ids"`
 }
 
 type UserListResponse struct {

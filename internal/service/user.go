@@ -11,11 +11,9 @@ type User struct {
 }
 
 func (s User) Insert(req *dto.UserInsertRequest) error {
-	var err error
-
 	user := req.GenModel()
 
-	err = dbstore.Factory().UserStore().Insert(user)
+	err := dbstore.Factory().UserStore().Insert(user)
 
 	return err
 }
